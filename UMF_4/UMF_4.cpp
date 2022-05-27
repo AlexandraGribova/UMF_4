@@ -80,6 +80,9 @@ void L_1_Trunsp(vector <double> pr, vector <double>& r)
 	}
 }
 
+
+
+
 void U_1_Trunsp(vector <double> pr, vector <double>& z)
 {
 	int	i0, i1, j, k;
@@ -90,8 +93,8 @@ void U_1_Trunsp(vector <double> pr, vector <double>& z)
 		i0 = ig[i] - 1;
 		i1 = ig[i + 1] - 1;
 		for (k = i0; k < i1; k++)
-			s -= L[k] * r[jg[k] - 1];
-		r[i] = s;
+			s -= L[k] * z[jg[k] - 1];
+		z[i] = s;
 	}
 }
 
@@ -220,9 +223,9 @@ void BCG()
 		X_k(a, z);
 		Vec_k(r, a, boof);//r=r-a*LAUz
 		//!! транспонирование
-		L_1_Trunsp(s, boof);//boof=(U^-1)*s
+		L_1_Trunsp(s, boof);//boof=(L^-т)*s
 		AVecTrunsp(boof, boof1);//boof1=A^t*boof 
-		U_1_Trunsp(boof1, boof);//boof=(L^-1)*boof1
+		U_1_Trunsp(boof1, boof);//boof=(U^-т)*boof1
 		//!!
 		Vec_k(p, a, boof);//p=p-a*LA^tUz
 		b = scalar_mult(p, r, N) / scalar_mult(p_0, r_0, N);
