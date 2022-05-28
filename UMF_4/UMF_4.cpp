@@ -98,6 +98,21 @@ void U_1_Trunsp(vector <double> pr, vector <double>& z)
 	}
 }
 
+void U1(vector <double> x, vector <double>& out)
+{
+	int	i0, i1, j, k;
+	double xi;
+	for (int i = N-1; i >=0; i--)
+	{
+		i0 = ig[i] - 1;
+		i1 = ig[i + 1] - 1;
+		for (k = i0; k < i1; k++)
+		{
+			j = jg[k] - 1;
+			out[j] += U[k] * x[i];
+		}
+	}
+}
 
 
 void U_1(vector <double> pr, vector <double>& z)
@@ -233,7 +248,7 @@ void BCG()
 		Vec_k_plus(b, p, s, s_0);
 		nr = Norm(r);
 	}
-	U_1(X, X);
+	U1(X, X);
 	for (int j = 0; j < N; j++)
 		cout << X[j] << endl;
 }
