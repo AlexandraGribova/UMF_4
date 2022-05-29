@@ -63,7 +63,6 @@ void L_1(vector <double> pr, vector <double>& r)
 
 void L_1_Trunsp(vector <double> pr, vector <double>& r)
 {
-	double s;
 	double xi;
 	int	i0, i1, k, j;
 	r = pr;
@@ -75,7 +74,7 @@ void L_1_Trunsp(vector <double> pr, vector <double>& r)
 		for (k = i0; k < i1; k++)
 		{
 			j = jg[k] - 1;
-			r[j] -= U[k] * xi;
+			r[j] -= L[k] * xi;
 		}
 	}
 }
@@ -93,7 +92,7 @@ void U_1_Trunsp(vector <double> pr, vector <double>& z)
 		i0 = ig[i] - 1;
 		i1 = ig[i + 1] - 1;
 		for (k = i0; k < i1; k++)
-			s -= L[k] * z[jg[k] - 1];
+			s -= U[k] * z[jg[k] - 1];
 		z[i] = s;
 	}
 }
@@ -102,7 +101,7 @@ void U1(vector <double> x, vector <double>& out)
 {
 	int	i0, i1, j, k;
 	double xi;
-	for (int i = N-1; i >=0; i--)
+	for (int i = 0; i <N; i++)
 	{
 		i0 = ig[i] - 1;
 		i1 = ig[i + 1] - 1;
@@ -229,12 +228,12 @@ void BCG()
 			break;
 		p_0 = p;
 		r_0 = r;
-		z_0 = z;
+		z_0 = z; 
 		s_0 = s;
 		U_1(z, boof);//boof=(U^-1)*z
 		AVec(boof, boof1);//boof1=A*boof 
 		L_1(boof1, boof);//boof=(L^-1)*boof1
-		a = scalar_mult(p, r, N) / scalar_mult(s, boof ,N);//a=(p,r)/(s,boof)  (3.35)
+		a = scalar_mult(p_0, r_0, N) / scalar_mult(s_0, boof ,N);//a=(p,r)/(s,boof)  (3.35)
 		X_k(a, z);
 		Vec_k(r, a, boof);//r=r-a*LAUz
 		//!! транспонирование
@@ -248,7 +247,7 @@ void BCG()
 		Vec_k_plus(b, p, s, s_0);
 		nr = Norm(r);
 	}
-	U1(X, X);
+	U_1(X, X);
 	for (int j = 0; j < N; j++)
 		cout << X[j] << endl;
 }
